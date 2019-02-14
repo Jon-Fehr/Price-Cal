@@ -56,6 +56,7 @@
             this.btnOpen1.TabIndex = 1;
             this.btnOpen1.Text = "Supplier Inv Sheet";
             this.btnOpen1.UseVisualStyleBackColor = true;
+            this.btnOpen1.Click += new System.EventHandler(this.btnOpen1_Click);
             // 
             // cboOpen
             // 
@@ -64,6 +65,7 @@
             this.cboOpen.Name = "cboOpen";
             this.cboOpen.Size = new System.Drawing.Size(188, 21);
             this.cboOpen.TabIndex = 2;
+            this.cboOpen.SelectedIndexChanged += new System.EventHandler(this.cboOpen_SelectedIndexChanged);
             // 
             // dataGridView1
             // 
@@ -88,6 +90,7 @@
             this.cboOpen2.Name = "cboOpen2";
             this.cboOpen2.Size = new System.Drawing.Size(188, 21);
             this.cboOpen2.TabIndex = 6;
+            this.cboOpen2.SelectedIndexChanged += new System.EventHandler(this.cboOpen2_SelectedIndexChanged);
             // 
             // btnOpen2
             // 
@@ -97,6 +100,7 @@
             this.btnOpen2.TabIndex = 7;
             this.btnOpen2.Text = "Yakesh Inv Sheet";
             this.btnOpen2.UseVisualStyleBackColor = true;
+            this.btnOpen2.Click += new System.EventHandler(this.btnOpen2_Click);
             // 
             // Form1
             // 
