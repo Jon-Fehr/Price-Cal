@@ -88,6 +88,8 @@ namespace Price_Calc
             //MessageBox.Show(this.btnCalcPrice.Text = dataGridView2[1, 2].Value.ToString()); 
 
             // Use a for loop go through and delete all SKUS that have an A,B,C, or D
+            formatList();
+            
 
             // compare the new Dataset to the supplier set. 
                 // If there are any matches put that info(Entire Row) into a new data set. 
@@ -95,6 +97,29 @@ namespace Price_Calc
 
 
         }
+        public void formatList()
+        {
+            
+
+            for (int i = 0; i < this.dataGridView2.RowCount-1; i++){
+                // MessageBox.Show(this.btnCalcPrice.Text = dataGridView2[1, i].Value.ToString()+ this.dataGridView2.RowCount);
+                int skuLength = dataGridView2.Rows[i].Cells["Class"].Value.ToString().Length;
+
+               if (skuLength == 5)
+                {
+                    String newSku = "0" + dataGridView2[1, i].Value.ToString();
+                    MessageBox.Show(newSku);
+                   
+                }
+              // else if()
+
+            }
+
+            //return 1;
+
+        }
     }
     
+    
 }
+
