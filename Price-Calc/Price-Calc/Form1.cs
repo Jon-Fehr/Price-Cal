@@ -90,7 +90,8 @@ namespace Price_Calc
             // Use a for loop go through and delete all SKUS that have an A,B,C, or D
             removeABSize();
 
-            //skuSize();
+            // Makes all Skus that are 4 in length 5 in length. Adds a 0 in from of any sku that only has 4 numbers. 
+            skuSize();
             
 
             // compare the new Dataset to the supplier set. 
