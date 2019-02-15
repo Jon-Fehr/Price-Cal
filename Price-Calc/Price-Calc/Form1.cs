@@ -88,7 +88,9 @@ namespace Price_Calc
             //MessageBox.Show(this.btnCalcPrice.Text = dataGridView2[1, 2].Value.ToString()); 
 
             // Use a for loop go through and delete all SKUS that have an A,B,C, or D
-            formatList();
+            removeABSize();
+
+            //skuSize();
             
 
             // compare the new Dataset to the supplier set. 
@@ -97,26 +99,56 @@ namespace Price_Calc
 
 
         }
-        public void formatList()
+        public void skuSize()
         {
             
 
             for (int i = 0; i < this.dataGridView2.RowCount-1; i++){
                 // MessageBox.Show(this.btnCalcPrice.Text = dataGridView2[1, i].Value.ToString()+ this.dataGridView2.RowCount);
-                int skuLength = dataGridView2.Rows[i].Cells["Class"].Value.ToString().Length;
-
-               if (skuLength == 5)
+                int skuLength = dataGridView2.Rows[i].Cells["Custom SKU"].Value.ToString().Length;
+               if (skuLength == 4)
                 {
-                    String newSku = "0" + dataGridView2[1, i].Value.ToString();
+                    String newSku = "";
+
+                    newSku = "0" + dataGridView2.Rows[i].Cells["Custom SKU"].Value.ToString();
+                    dataGridView2.Rows[i].Cells["Custom SKU"].Value = newSku;
                     MessageBox.Show(newSku);
                    
                 }
-              // else if()
+               
 
             }
+            lblItemCount.Text = dataGridView2.RowCount.ToString();
+        }
 
-            //return 1;
+        public void removeABSize()
+        {
+            for (int i = 0; i < this.dataGridView2.RowCount - 1; i++)
+            {
+                String skuString = dataGridView2.Rows[i].Cells["Custom SKU"].Value.ToString();
+                if(skuString.Length >= 6 && skuString[5] == 'A'|| skuString.Length >= 6 && skuString[5] == 'B'|| skuString.Length >= 6 && skuString[5] == 'C')
+                {
+                    //MessageBox.Show(dataGridView2.Rows[i].Cells["Custom SKU"].Value.ToString());
+                    lblItemCount.Text = dataGridView2.RowCount.ToString();
+                    dataGridView2.Rows.RemoveAt(i);
+                    lblItemCount.Text = dataGridView2.RowCount.ToString();
+                }
+                else if(skuString.Length == 0)
+                {
+                    dataGridView2.Rows.RemoveAt(i);
+                }
+            }
 
+            for(int j = 0; j < this.dataGridView2.RowCount - 1; j++)
+            {
+                String skuString = dataGridView2.Rows[j].Cells["Custom SKU"].Value.ToString();
+              if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C')
+                {
+                    j = 0;
+                    removeABSize();
+                }
+            }
+            
         }
     }
     

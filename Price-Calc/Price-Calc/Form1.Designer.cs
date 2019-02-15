@@ -36,6 +36,8 @@
             this.cboOpen2 = new System.Windows.Forms.ComboBox();
             this.btnOpen2 = new System.Windows.Forms.Button();
             this.btnCalcPrice = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblItemCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -113,11 +115,31 @@
             this.btnCalcPrice.UseVisualStyleBackColor = true;
             this.btnCalcPrice.Click += new System.EventHandler(this.btnCalcPrice_Click);
             // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(915, 83);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(61, 13);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "Item Count:";
+            // 
+            // lblItemCount
+            // 
+            this.lblItemCount.AutoSize = true;
+            this.lblItemCount.Location = new System.Drawing.Point(983, 85);
+            this.lblItemCount.Name = "lblItemCount";
+            this.lblItemCount.Size = new System.Drawing.Size(13, 13);
+            this.lblItemCount.TabIndex = 10;
+            this.lblItemCount.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 533);
+            this.Controls.Add(this.lblItemCount);
+            this.Controls.Add(this.label1);
             this.Controls.Add(this.btnCalcPrice);
             this.Controls.Add(this.btnOpen2);
             this.Controls.Add(this.cboOpen2);
@@ -145,6 +167,8 @@
         private System.Windows.Forms.ComboBox cboOpen2;
         private System.Windows.Forms.Button btnOpen2;
         private System.Windows.Forms.Button btnCalcPrice;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label lblItemCount;
     }
 }
 
