@@ -73,12 +73,27 @@ namespace Price_Calc
                     reader.Close();
 
                 }
+               
             }
         }
 
         private void cboOpen2_SelectedIndexChanged(object sender, EventArgs e)
         {
             dataGridView2.DataSource = result2.Tables[cboOpen2.SelectedIndex];
+        }
+
+        private void btnCalcPrice_Click(object sender, EventArgs e)
+        {
+            // - Displays the value in the data grid view at the particular cell. 
+            //MessageBox.Show(this.btnCalcPrice.Text = dataGridView2[1, 2].Value.ToString()); 
+
+            // Use a for loop go through and delete all SKUS that have an A,B,C, or D
+
+            // compare the new Dataset to the supplier set. 
+                // If there are any matches put that info(Entire Row) into a new data set. 
+
+
+
         }
     }
     

@@ -35,6 +35,7 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.cboOpen2 = new System.Windows.Forms.ComboBox();
             this.btnOpen2 = new System.Windows.Forms.Button();
+            this.btnCalcPrice = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -102,11 +103,22 @@
             this.btnOpen2.UseVisualStyleBackColor = true;
             this.btnOpen2.Click += new System.EventHandler(this.btnOpen2_Click);
             // 
+            // btnCalcPrice
+            // 
+            this.btnCalcPrice.Location = new System.Drawing.Point(915, 53);
+            this.btnCalcPrice.Name = "btnCalcPrice";
+            this.btnCalcPrice.Size = new System.Drawing.Size(134, 23);
+            this.btnCalcPrice.TabIndex = 8;
+            this.btnCalcPrice.Text = "Calculate Price";
+            this.btnCalcPrice.UseVisualStyleBackColor = true;
+            this.btnCalcPrice.Click += new System.EventHandler(this.btnCalcPrice_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 533);
+            this.Controls.Add(this.btnCalcPrice);
             this.Controls.Add(this.btnOpen2);
             this.Controls.Add(this.cboOpen2);
             this.Controls.Add(this.dataGridView2);
@@ -132,6 +144,7 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ComboBox cboOpen2;
         private System.Windows.Forms.Button btnOpen2;
+        private System.Windows.Forms.Button btnCalcPrice;
     }
 }
 
