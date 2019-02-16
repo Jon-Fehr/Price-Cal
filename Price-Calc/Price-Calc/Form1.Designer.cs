@@ -110,7 +110,7 @@
             // 
             // btnFormatList
             // 
-            this.btnFormatList.Location = new System.Drawing.Point(915, 53);
+            this.btnFormatList.Location = new System.Drawing.Point(1063, 104);
             this.btnFormatList.Name = "btnFormatList";
             this.btnFormatList.Size = new System.Drawing.Size(134, 23);
             this.btnFormatList.TabIndex = 8;
@@ -121,7 +121,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(915, 83);
+            this.label1.Location = new System.Drawing.Point(1060, 140);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 9;
@@ -130,7 +130,7 @@
             // lblItemCount
             // 
             this.lblItemCount.AutoSize = true;
-            this.lblItemCount.Location = new System.Drawing.Point(983, 85);
+            this.lblItemCount.Location = new System.Drawing.Point(1184, 140);
             this.lblItemCount.Name = "lblItemCount";
             this.lblItemCount.Size = new System.Drawing.Size(13, 13);
             this.lblItemCount.TabIndex = 10;
@@ -139,7 +139,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(641, 81);
+            this.label2.Location = new System.Drawing.Point(1060, 233);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 13);
             this.label2.TabIndex = 11;
@@ -148,7 +148,7 @@
             // lblMatches
             // 
             this.lblMatches.AutoSize = true;
-            this.lblMatches.Location = new System.Drawing.Point(728, 82);
+            this.lblMatches.Location = new System.Drawing.Point(1184, 233);
             this.lblMatches.Name = "lblMatches";
             this.lblMatches.Size = new System.Drawing.Size(13, 13);
             this.lblMatches.TabIndex = 12;
@@ -156,9 +156,9 @@
             // 
             // btnFindMatches
             // 
-            this.btnFindMatches.Location = new System.Drawing.Point(421, 70);
+            this.btnFindMatches.Location = new System.Drawing.Point(1063, 181);
             this.btnFindMatches.Name = "btnFindMatches";
-            this.btnFindMatches.Size = new System.Drawing.Size(75, 23);
+            this.btnFindMatches.Size = new System.Drawing.Size(134, 23);
             this.btnFindMatches.TabIndex = 13;
             this.btnFindMatches.Text = "Find matches";
             this.btnFindMatches.UseVisualStyleBackColor = true;
@@ -168,7 +168,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1079, 533);
+            this.ClientSize = new System.Drawing.Size(1784, 629);
             this.Controls.Add(this.btnFindMatches);
             this.Controls.Add(this.lblMatches);
             this.Controls.Add(this.label2);

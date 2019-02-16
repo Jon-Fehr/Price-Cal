@@ -22,7 +22,6 @@ namespace Price_Calc
         DataSet result;
         DataSet result2;
 
-
         private void btnOpen1_Click(object sender, EventArgs e)
         {
             using (OpenFileDialog ofd = new OpenFileDialog() { Filter = "Excel Workbook 97-2003|*.xls|Excel Workbook|*.xlsx", ValidateNames = true })
@@ -82,6 +81,8 @@ namespace Price_Calc
             dataGridView2.DataSource = result2.Tables[cboOpen2.SelectedIndex];
         }
 
+       
+
         private void btnCalcPrice_Click(object sender, EventArgs e)
         {
             // Use a for loop go through and delete all SKUS that have an A,B,C, or D
@@ -99,6 +100,8 @@ namespace Price_Calc
             // compare the new Dataset to the supplier set. 
             // If there are any matches put that info(Entire Row) into a new data set.
             compareDataSets();
+
+            
         }
 
         public void skuSize()
@@ -128,7 +131,7 @@ namespace Price_Calc
             {
                 //Runs through the dataset once and removes any sku that ends with an A,B,or C
                 String skuString = dataGridView2.Rows[b].Cells["Custom SKU"].Value.ToString();
-                if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C'|| skuString.Length >= 6 && skuString[5] == 'D')
+                if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C' || skuString.Length >= 6 && skuString[5] == 'D')
                 {
                     dataGridView2.Rows.RemoveAt(b);
 
@@ -147,8 +150,8 @@ namespace Price_Calc
                 String skuString = dataGridView2.Rows[c].Cells["Custom SKU"].Value.ToString();
                 if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C')
                 {
-                    c = 0;
                     removeABSize();
+                    c = 0;
                 }
             }
         }
@@ -163,24 +166,55 @@ namespace Price_Calc
             {
                 //Loop that goes through the suppliers invantory
                 for (int j = 0; j < dataGridView1.RowCount - 1; j++)
-                {  
+                {
                     if (dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString() == dataGridView1.Rows[j].Cells["Item #"].Value.ToString())
                     {
                         matches++;
                         lblMatches.Text = matches.ToString();
                         //Make sure that all the cells are being checked. 
                         dataGridView2.Rows[k].DefaultCellStyle.BackColor = Color.Green;
+                        dataGridView1.Rows[j].DefaultCellStyle.BackColor = Color.Green;
                         j = 0;
                         k++;
                     }
                 }
             }
-        }
-    
 
+            removeUnusedSku();
+        }
+
+        public void removeUnusedSku()
+        {
+            
+
+            for (int j = 0; j < dataGridView1.RowCount-1;  j++)
+            {
+                if (dataGridView1.DefaultCellStyle.BackColor == Color.White)
+                {
+                    
+                        dataGridView1.Rows.RemoveAt(j);
+                    
+                   // dataGridView1.Refresh();
+                }
+            }
+
+            for(int k = 0; k < dataGridView1.RowCount - 1; k++)
+            {
+                if(dataGridView1.DefaultCellStyle.BackColor == Color.White)
+                {
+                    removeUnusedSku();
+                    k = 0;
+
+                    Having the same issue as  A&B
+                }
+                
+            }
+        }
        
-    }
-    
-    
+     }
+
 }
 
+
+
+            
