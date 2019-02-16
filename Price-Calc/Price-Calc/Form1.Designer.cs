@@ -35,9 +35,12 @@
             this.dataGridView2 = new System.Windows.Forms.DataGridView();
             this.cboOpen2 = new System.Windows.Forms.ComboBox();
             this.btnOpen2 = new System.Windows.Forms.Button();
-            this.btnCalcPrice = new System.Windows.Forms.Button();
+            this.btnFormatList = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.lblItemCount = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.lblMatches = new System.Windows.Forms.Label();
+            this.btnFindMatches = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -105,15 +108,15 @@
             this.btnOpen2.UseVisualStyleBackColor = true;
             this.btnOpen2.Click += new System.EventHandler(this.btnOpen2_Click);
             // 
-            // btnCalcPrice
+            // btnFormatList
             // 
-            this.btnCalcPrice.Location = new System.Drawing.Point(915, 53);
-            this.btnCalcPrice.Name = "btnCalcPrice";
-            this.btnCalcPrice.Size = new System.Drawing.Size(134, 23);
-            this.btnCalcPrice.TabIndex = 8;
-            this.btnCalcPrice.Text = "Calculate Price";
-            this.btnCalcPrice.UseVisualStyleBackColor = true;
-            this.btnCalcPrice.Click += new System.EventHandler(this.btnCalcPrice_Click);
+            this.btnFormatList.Location = new System.Drawing.Point(915, 53);
+            this.btnFormatList.Name = "btnFormatList";
+            this.btnFormatList.Size = new System.Drawing.Size(134, 23);
+            this.btnFormatList.TabIndex = 8;
+            this.btnFormatList.Text = "Format List";
+            this.btnFormatList.UseVisualStyleBackColor = true;
+            this.btnFormatList.Click += new System.EventHandler(this.btnCalcPrice_Click);
             // 
             // label1
             // 
@@ -133,14 +136,45 @@
             this.lblItemCount.TabIndex = 10;
             this.lblItemCount.Text = "0";
             // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(641, 81);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(80, 13);
+            this.label2.TabIndex = 11;
+            this.label2.Text = "matches found:";
+            // 
+            // lblMatches
+            // 
+            this.lblMatches.AutoSize = true;
+            this.lblMatches.Location = new System.Drawing.Point(728, 82);
+            this.lblMatches.Name = "lblMatches";
+            this.lblMatches.Size = new System.Drawing.Size(13, 13);
+            this.lblMatches.TabIndex = 12;
+            this.lblMatches.Text = "0";
+            // 
+            // btnFindMatches
+            // 
+            this.btnFindMatches.Location = new System.Drawing.Point(421, 70);
+            this.btnFindMatches.Name = "btnFindMatches";
+            this.btnFindMatches.Size = new System.Drawing.Size(75, 23);
+            this.btnFindMatches.TabIndex = 13;
+            this.btnFindMatches.Text = "Find matches";
+            this.btnFindMatches.UseVisualStyleBackColor = true;
+            this.btnFindMatches.Click += new System.EventHandler(this.btnFindMatches_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1079, 533);
+            this.Controls.Add(this.btnFindMatches);
+            this.Controls.Add(this.lblMatches);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.lblItemCount);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.btnCalcPrice);
+            this.Controls.Add(this.btnFormatList);
             this.Controls.Add(this.btnOpen2);
             this.Controls.Add(this.cboOpen2);
             this.Controls.Add(this.dataGridView2);
@@ -166,9 +200,12 @@
         private System.Windows.Forms.DataGridView dataGridView2;
         private System.Windows.Forms.ComboBox cboOpen2;
         private System.Windows.Forms.Button btnOpen2;
-        private System.Windows.Forms.Button btnCalcPrice;
+        private System.Windows.Forms.Button btnFormatList;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label lblItemCount;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblMatches;
+        private System.Windows.Forms.Button btnFindMatches;
     }
 }
 
