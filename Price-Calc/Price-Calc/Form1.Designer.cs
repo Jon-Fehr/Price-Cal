@@ -44,6 +44,9 @@
             this.btnRmvSkus = new System.Windows.Forms.Button();
             this.label3 = new System.Windows.Forms.Label();
             this.lblDG1RowCount = new System.Windows.Forms.Label();
+            this.btnCalcPrices = new System.Windows.Forms.Button();
+            this.tbMarkUp = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -195,11 +198,40 @@
             this.lblDG1RowCount.TabIndex = 16;
             this.lblDG1RowCount.Text = "0";
             // 
+            // btnCalcPrices
+            // 
+            this.btnCalcPrices.Location = new System.Drawing.Point(1066, 419);
+            this.btnCalcPrices.Name = "btnCalcPrices";
+            this.btnCalcPrices.Size = new System.Drawing.Size(131, 23);
+            this.btnCalcPrices.TabIndex = 17;
+            this.btnCalcPrices.Text = "Calculate Prices";
+            this.btnCalcPrices.UseVisualStyleBackColor = true;
+            this.btnCalcPrices.Click += new System.EventHandler(this.btnCalcPrices_Click);
+            // 
+            // tbMarkUp
+            // 
+            this.tbMarkUp.Location = new System.Drawing.Point(1066, 366);
+            this.tbMarkUp.Name = "tbMarkUp";
+            this.tbMarkUp.Size = new System.Drawing.Size(100, 20);
+            this.tbMarkUp.TabIndex = 18;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(1066, 347);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(83, 13);
+            this.label4.TabIndex = 19;
+            this.label4.Text = "Percent Markup";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1784, 629);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.tbMarkUp);
+            this.Controls.Add(this.btnCalcPrices);
             this.Controls.Add(this.lblDG1RowCount);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.btnRmvSkus);
@@ -243,6 +275,9 @@
         private System.Windows.Forms.Button btnRmvSkus;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label lblDG1RowCount;
+        private System.Windows.Forms.Button btnCalcPrices;
+        private System.Windows.Forms.TextBox tbMarkUp;
+        private System.Windows.Forms.Label label4;
     }
 }
 

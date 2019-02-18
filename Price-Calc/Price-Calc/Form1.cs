@@ -64,21 +64,28 @@ namespace Price_Calc
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    FileStream fs = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read);
-                    IExcelDataReader reader = ExcelReaderFactory.CreateBinaryReader(fs);
-                    result2 = reader.AsDataSet(new ExcelDataSetConfiguration()
+                    try
                     {
-                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                        FileStream fs = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read);
+                        IExcelDataReader reader = ExcelReaderFactory.CreateBinaryReader(fs);
+                        result2 = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
-                            UseHeaderRow = true
-                        }
-                    });
-                    cboOpen2.Items.Clear();
-                    foreach (System.Data.DataTable dt in result2.Tables)
-                        cboOpen2.Items.Add(dt.TableName);
-                    reader.Close();
-
+                            ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                            {
+                                UseHeaderRow = true
+                            }
+                        });
+                        cboOpen2.Items.Clear();
+                        foreach (System.Data.DataTable dt in result2.Tables)
+                            cboOpen2.Items.Add(dt.TableName);
+                        reader.Close();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("You are currently trying to use a file you have open. Please close this file and try again.");
+                    }
                 }
+                 
 
             }
         }
@@ -88,7 +95,7 @@ namespace Price_Calc
             dataGridView2.DataSource = result2.Tables[cboOpen2.SelectedIndex];
         }
 
-       
+
 
         private void btnCalcPrice_Click(object sender, EventArgs e)
         {
@@ -105,12 +112,23 @@ namespace Price_Calc
         {
             // compare the new Dataset to the supplier set. 
             // If there are any matches put that info(Entire Row) into a new data set.
-            compareDataSets();            
+            compareDataSets();
+        }
+
+        private void btnRmvSkus_Click(object sender, EventArgs e)
+        {
+            removeUnusedSku();
+        }
+
+        private void btnCalcPrices_Click(object sender, EventArgs e)
+        {
+            calcCWTPrice();
         }
 
         public void skuSize()
         {
-            for (int a = 0; a < dataGridView2.RowCount - 1; a++) {
+            for (int a = 0; a < dataGridView2.RowCount - 1; a++)
+            {
                 // Zeros are dropped infront of a sku from the store invantory list. This readds them, so the sku can be propperly matched to the suppliers
                 // invantory list. 
                 int skuLength = dataGridView2.Rows[a].Cells["Custom SKU"].Value.ToString().Length;
@@ -126,7 +144,7 @@ namespace Price_Calc
 
         public void removeABSize()
         {
-            // This forloop runs from the end to the start. This avoids the issues of trying to delete 
+            // This forloop runs from the end to the start. This avoids the issues of trying to delete a cell that just had data put into it.
             for (int b = dataGridView2.RowCount - 2; b >= 0; b--)
             {
                 //Runs through the dataset once and removes any sku that ends with an A,B,or C or has an empty cell for the SKU number.
@@ -153,42 +171,84 @@ namespace Price_Calc
                 //Loop that goes through the suppliers invantory
                 for (int j = dataGridView1.RowCount - 2; j >= 0; j--)
                 {
-                  // MessageBox.Show("enter for "+ dataGridView1.RowCount + " DG1 " + dataGridView1.Rows[j].Cells["Item #"].Value.ToString()+ " DG2 " + dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString());
+                    // MessageBox.Show("enter for "+ dataGridView1.RowCount + " DG1 " + dataGridView1.Rows[j].Cells["Item #"].Value.ToString()+ " DG2 " + dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString());
                     if (dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString() == dataGridView1.Rows[j].Cells["Item #"].Value.ToString())
                     {
-                       // MessageBox.Show("enter if");
+                        // MessageBox.Show("enter if");
                         matches++;
                         lblMatches.Text = matches.ToString();
                         //Make sure that all the cells are being checked. 
                         dataGridView2.Rows[k].DefaultCellStyle.BackColor = Color.Green;
                         dataGridView1.Rows[j].DefaultCellStyle.BackColor = Color.Green;
-                    }  
-                }  
+                    }
+                }
 
-            }  
+            }
         }
 
         public void removeUnusedSku()
         {
-            for (int j = dataGridView1.RowCount - 2; j >= 0;  j--)
+            for (int j = dataGridView1.RowCount - 2; j >= 0; j--)
             {
                 if (dataGridView1.Rows[j].DefaultCellStyle.BackColor != dataGridView1.Rows[0].DefaultCellStyle.BackColor)
                 {
-                    dataGridView1.Rows.RemoveAt(j);  
+                    dataGridView1.Rows.RemoveAt(j);
                 }
             }
             dataGridView1.Refresh();
             lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
         }
 
-        private void btnRmvSkus_Click(object sender, EventArgs e)
+        //Calculates all the priceing for the CWT items.
+        //Needs to create new skus based on the old ones for half and quater sizes. (10' and 5' pieces)
+        public void calcCWTPrice()
         {
-            MessageBox.Show("Button Clicked.");
-            removeUnusedSku();
 
+            double lBEach;
+            double price;
+            double materialCost;
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                lBEach = Convert.ToDouble(dataGridView1.Rows[i].Cells["Lbs EA"].Value.ToString());
+                 price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+
+                if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cwt")
+                {
+                    price = lBEach / 100 * materialCost * (1 + tbMarkUp.Text) ;
+                    
+                }
+            }
         }
-    }
 
+        //Calculates all the priceing for the CFT items.
+        //Needs to create new skus based on the old ones for half and quater sizes. (24' 20' 10' and 5' pieces)
+        public void calcCFTPrice()
+        {
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cft")
+                {
+                    MessageBox.Show("calculate price here.");
+                }
+            }
+        }
+
+        //Calculates all the priceing for the CSF items.
+        
+        public void calcCSFPrice()
+        {
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+                if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
+                {
+                    MessageBox.Show("calculate price here.");
+                }
+            }
+        }
+
+
+    }
 }
 
 
