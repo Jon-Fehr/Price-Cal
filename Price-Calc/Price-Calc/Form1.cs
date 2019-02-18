@@ -28,20 +28,26 @@ namespace Price_Calc
             {
                 if (ofd.ShowDialog() == DialogResult.OK)
                 {
-                    FileStream fs = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read);
-                    IExcelDataReader reader = ExcelReaderFactory.CreateBinaryReader(fs);
-                    result = reader.AsDataSet(new ExcelDataSetConfiguration()
+                    try
                     {
-                        ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                        FileStream fs = File.Open(ofd.FileName, FileMode.Open, FileAccess.Read);
+                        IExcelDataReader reader = ExcelReaderFactory.CreateBinaryReader(fs);
+                        result = reader.AsDataSet(new ExcelDataSetConfiguration()
                         {
-                            UseHeaderRow = true
-                        }
-                    });
-                    cboOpen.Items.Clear();
-                    foreach (System.Data.DataTable dt in result.Tables)
-                        cboOpen.Items.Add(dt.TableName);
-                    reader.Close();
-
+                            ConfigureDataTable = (_) => new ExcelDataTableConfiguration()
+                            {
+                                UseHeaderRow = true
+                            }
+                        });
+                        cboOpen.Items.Clear();
+                        foreach (System.Data.DataTable dt in result.Tables)
+                            cboOpen.Items.Add(dt.TableName);
+                        reader.Close();
+                    }
+                    catch
+                    {
+                        MessageBox.Show("You are currently trying to use a file you have open. Please close this file and try again.");
+                    }
                 }
             }
         }
@@ -49,6 +55,7 @@ namespace Price_Calc
         private void cboOpen_SelectedIndexChanged(object sender, EventArgs e)
         {
             dataGridView1.DataSource = result.Tables[cboOpen.SelectedIndex];
+            lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
         }
 
         private void btnOpen2_Click(object sender, EventArgs e)
@@ -96,18 +103,13 @@ namespace Price_Calc
 
         private void btnFindMatches_Click(object sender, EventArgs e)
         {
-
             // compare the new Dataset to the supplier set. 
             // If there are any matches put that info(Entire Row) into a new data set.
-            compareDataSets();
-
-            
+            compareDataSets();            
         }
 
         public void skuSize()
         {
-
-
             for (int a = 0; a < dataGridView2.RowCount - 1; a++) {
                 // Zeros are dropped infront of a sku from the store invantory list. This readds them, so the sku can be propperly matched to the suppliers
                 // invantory list. 
@@ -115,43 +117,27 @@ namespace Price_Calc
                 if (skuLength == 4)
                 {
                     String newSku = "";
-
                     newSku = "0" + dataGridView2.Rows[a].Cells["Custom SKU"].Value.ToString();
                     dataGridView2.Rows[a].Cells["Custom SKU"].Value = newSku;
                 }
-
-
             }
             lblItemCount.Text = dataGridView2.RowCount.ToString();
         }
 
         public void removeABSize()
         {
-            for (int b = 0; b < dataGridView2.RowCount - 1; b++)
+            // This forloop runs from the end to the start. This avoids the issues of trying to delete 
+            for (int b = dataGridView2.RowCount - 2; b >= 0; b--)
             {
-                //Runs through the dataset once and removes any sku that ends with an A,B,or C
+                //Runs through the dataset once and removes any sku that ends with an A,B,or C or has an empty cell for the SKU number.
                 String skuString = dataGridView2.Rows[b].Cells["Custom SKU"].Value.ToString();
                 if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C' || skuString.Length >= 6 && skuString[5] == 'D')
                 {
                     dataGridView2.Rows.RemoveAt(b);
-
                 }
                 else if (skuString.Length == 0)
                 {
                     dataGridView2.Rows.RemoveAt(b);
-                }
-            }
-
-            for (int c = 0; c < dataGridView2.RowCount - 1; c++)
-            {
-                //Since you can't remove a row if it has been repositioned(row moved up because the one above it was deleted.) This runs through
-                // the dataset to check if there are any skus that ends with an A,B,or C. If there are any it calls the remove funcution again. 
-                // (Makes it so the rows aren't considered moved anymore so the sku can be deleted if needed.)
-                String skuString = dataGridView2.Rows[c].Cells["Custom SKU"].Value.ToString();
-                if (skuString.Length >= 6 && skuString[5] == 'A' || skuString.Length >= 6 && skuString[5] == 'B' || skuString.Length >= 6 && skuString[5] == 'C')
-                {
-                    removeABSize();
-                    c = 0;
                 }
             }
         }
@@ -165,53 +151,43 @@ namespace Price_Calc
             for (int k = 0; k < dataGridView2.RowCount - 1; k++)
             {
                 //Loop that goes through the suppliers invantory
-                for (int j = 0; j < dataGridView1.RowCount - 1; j++)
+                for (int j = dataGridView1.RowCount - 2; j >= 0; j--)
                 {
+                  // MessageBox.Show("enter for "+ dataGridView1.RowCount + " DG1 " + dataGridView1.Rows[j].Cells["Item #"].Value.ToString()+ " DG2 " + dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString());
                     if (dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString() == dataGridView1.Rows[j].Cells["Item #"].Value.ToString())
                     {
+                       // MessageBox.Show("enter if");
                         matches++;
                         lblMatches.Text = matches.ToString();
                         //Make sure that all the cells are being checked. 
                         dataGridView2.Rows[k].DefaultCellStyle.BackColor = Color.Green;
                         dataGridView1.Rows[j].DefaultCellStyle.BackColor = Color.Green;
-                        j = 0;
-                        k++;
-                    }
-                }
-            }
+                    }  
+                }  
 
-            removeUnusedSku();
+            }  
         }
 
         public void removeUnusedSku()
         {
-            
-
-            for (int j = 0; j < dataGridView1.RowCount-1;  j++)
+            for (int j = dataGridView1.RowCount - 2; j >= 0;  j--)
             {
-                if (dataGridView1.DefaultCellStyle.BackColor == Color.White)
+                if (dataGridView1.Rows[j].DefaultCellStyle.BackColor != dataGridView1.Rows[0].DefaultCellStyle.BackColor)
                 {
-                    
-                        dataGridView1.Rows.RemoveAt(j);
-                    
-                   // dataGridView1.Refresh();
+                    dataGridView1.Rows.RemoveAt(j);  
                 }
             }
-
-            for(int k = 0; k < dataGridView1.RowCount - 1; k++)
-            {
-                if(dataGridView1.DefaultCellStyle.BackColor == Color.White)
-                {
-                    removeUnusedSku();
-                    k = 0;
-
-                    Having the same issue as  A&B
-                }
-                
-            }
+            dataGridView1.Refresh();
+            lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
         }
-       
-     }
+
+        private void btnRmvSkus_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Button Clicked.");
+            removeUnusedSku();
+
+        }
+    }
 
 }
 

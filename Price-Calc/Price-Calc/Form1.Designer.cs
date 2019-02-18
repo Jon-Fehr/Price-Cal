@@ -41,6 +41,9 @@
             this.label2 = new System.Windows.Forms.Label();
             this.lblMatches = new System.Windows.Forms.Label();
             this.btnFindMatches = new System.Windows.Forms.Button();
+            this.btnRmvSkus = new System.Windows.Forms.Button();
+            this.label3 = new System.Windows.Forms.Label();
+            this.lblDG1RowCount = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -164,11 +167,42 @@
             this.btnFindMatches.UseVisualStyleBackColor = true;
             this.btnFindMatches.Click += new System.EventHandler(this.btnFindMatches_Click);
             // 
+            // btnRmvSkus
+            // 
+            this.btnRmvSkus.Location = new System.Drawing.Point(1063, 272);
+            this.btnRmvSkus.Name = "btnRmvSkus";
+            this.btnRmvSkus.Size = new System.Drawing.Size(134, 23);
+            this.btnRmvSkus.TabIndex = 14;
+            this.btnRmvSkus.Text = "Remove Unneeded ";
+            this.btnRmvSkus.UseVisualStyleBackColor = true;
+            this.btnRmvSkus.Click += new System.EventHandler(this.btnRmvSkus_Click);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(1063, 315);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(83, 13);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "DG1 row Count:";
+            // 
+            // lblDG1RowCount
+            // 
+            this.lblDG1RowCount.AutoSize = true;
+            this.lblDG1RowCount.Location = new System.Drawing.Point(1162, 315);
+            this.lblDG1RowCount.Name = "lblDG1RowCount";
+            this.lblDG1RowCount.Size = new System.Drawing.Size(13, 13);
+            this.lblDG1RowCount.TabIndex = 16;
+            this.lblDG1RowCount.Text = "0";
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1784, 629);
+            this.Controls.Add(this.lblDG1RowCount);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.btnRmvSkus);
             this.Controls.Add(this.btnFindMatches);
             this.Controls.Add(this.lblMatches);
             this.Controls.Add(this.label2);
@@ -206,6 +240,9 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label lblMatches;
         private System.Windows.Forms.Button btnFindMatches;
+        private System.Windows.Forms.Button btnRmvSkus;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.Label lblDG1RowCount;
     }
 }
 
