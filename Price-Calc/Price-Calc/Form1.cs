@@ -123,6 +123,7 @@ namespace Price_Calc
         private void btnCalcPrices_Click(object sender, EventArgs e)
         {
             calcCWTPrice();
+            calcCFTPrice();
         }
 
         public void skuSize()
@@ -210,10 +211,9 @@ namespace Price_Calc
             double markup = 0.0;
             
             try{
+                // Convert markup function needed. 
                 markup = Convert.ToInt32(tbMarkUp.Text);
-                MessageBox.Show(markup.ToString());
                 markup = (1 + (markup / 100));
-                MessageBox.Show(markup.ToString());
             }
             catch
             {
@@ -229,21 +229,58 @@ namespace Price_Calc
                 {
                     price = lBEach / 100 * materialCost * markup;
                     dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price,2);
-
-
                 }
             }
         }
-
         //Calculates all the priceing for the CFT items.
         //Needs to create new skus based on the old ones for half and quater sizes. (24' 20' 10' and 5' pieces)
         public void calcCFTPrice()
-        {
+        { 
+            double price;
+            double materialCost;
+            double markup = 0.0;
+
+            try
+            {
+                // Convert markup function needed. 
+                markup = Convert.ToInt32(tbMarkUp.Text);
+                markup = (1 + (markup / 100));
+                
+            }
+            catch
+            {
+                MessageBox.Show("You can only enter whole numbers as a markup.");
+            }
+
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cft")
                 {
-                    MessageBox.Show("calculate price here.");
+                    materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+
+                    if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 24\'")){
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                        price = (.24 * materialCost * markup);
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20\'") || dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20R"))
+                    {
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Orange;
+                        price = (.2 * materialCost * markup);
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 21\'"))
+                    {
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightBlue;
+                        price = (.21 * materialCost * markup);
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 40\'"))
+                    {
+                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Violet;
+                        price = (.4 * materialCost * markup);
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
                 }
             }
         }
@@ -257,6 +294,7 @@ namespace Price_Calc
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
                 {
                     MessageBox.Show("calculate price here.");
+                    
                 }
             }
         }
