@@ -207,16 +207,30 @@ namespace Price_Calc
             double lBEach;
             double price;
             double materialCost;
+            double markup = 0.0;
+            
+            try{
+                markup = Convert.ToInt32(tbMarkUp.Text);
+                MessageBox.Show(markup.ToString());
+                markup = (1 + (markup / 100));
+                MessageBox.Show(markup.ToString());
+            }
+            catch
+            {
+                MessageBox.Show("You can only enter whole numbers as a markup.");
+            }
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
                 lBEach = Convert.ToDouble(dataGridView1.Rows[i].Cells["Lbs EA"].Value.ToString());
-                 price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                // price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                 materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
 
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cwt")
                 {
-                    price = lBEach / 100 * materialCost * (1 + tbMarkUp.Text) ;
-                    
+                    price = lBEach / 100 * materialCost * markup;
+                    dataGridView1.Rows[i].Cells["Price"].Value = price;
+
+
                 }
             }
         }
