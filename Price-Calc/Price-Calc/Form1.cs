@@ -228,7 +228,7 @@ namespace Price_Calc
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cwt")
                 {
                     price = lBEach / 100 * materialCost * markup;
-                    dataGridView1.Rows[i].Cells["Price"].Value = price;
+                    dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price,2);
 
 
                 }
