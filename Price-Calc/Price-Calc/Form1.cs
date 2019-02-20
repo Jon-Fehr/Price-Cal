@@ -56,6 +56,7 @@ namespace Price_Calc
         {
             dataGridView1.DataSource = result.Tables[cboOpen.SelectedIndex];
             lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
+            
         }
 
         private void btnOpen2_Click(object sender, EventArgs e)
@@ -85,8 +86,6 @@ namespace Price_Calc
                         MessageBox.Show("You are currently trying to use a file you have open. Please close this file and try again.");
                     }
                 }
-                 
-
             }
         }
 
@@ -124,6 +123,11 @@ namespace Price_Calc
         {
             calcCWTPrice();
             calcCFTPrice();
+            calcCSFPrice();
+            MessageBox.Show("Done Calculating Prices");
+
+            addSkus();
+            MessageBox.Show("Done adding Skus");
         }
 
         public void skuSize()
@@ -245,7 +249,6 @@ namespace Price_Calc
                 // Convert markup function needed. 
                 markup = Convert.ToInt32(tbMarkUp.Text);
                 markup = (1 + (markup / 100));
-                
             }
             catch
             {
@@ -258,27 +261,28 @@ namespace Price_Calc
                 {
                     materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
 
-                    if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 24\'")){
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Yellow;
+                    if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("24\'")){
                         price = (.24 * materialCost * markup);
                         dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
                     }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20\'") || dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20R"))
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("20\'") || dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20R"))
                     {
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Orange;
                         price = (.2 * materialCost * markup);
                         dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
                     }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 21\'"))
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("21\'"))
                     {
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.LightBlue;
                         price = (.21 * materialCost * markup);
                         dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
                     }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 40\'"))
+                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("40\'"))
                     {
-                        dataGridView1.Rows[i].DefaultCellStyle.BackColor = Color.Violet;
                         price = (.4 * materialCost * markup);
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("12\'"))
+                    {
+                        price = (.12 * materialCost * markup);
                         dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
                     }
                 }
@@ -287,19 +291,136 @@ namespace Price_Calc
 
         //Calculates all the priceing for the CSF items.
         
-        public void calcCSFPrice()
-        {
+        public void calcCSFPrice() { 
+            double price;
+            double materialCost;
+            double markup = 0.0;
+
+            try
+            { 
+                // Convert markup function needed. 
+                markup = Convert.ToInt32(tbMarkUp.Text);
+                markup = (1 + (markup / 100));
+            }
+            catch
+            {
+                MessageBox.Show("You can only enter whole numbers as a markup.");
+            }
+        
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
+                String cellValue = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
                 {
-                    MessageBox.Show("calculate price here.");
-                    
+                    materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+
+                    //4' Sheets
+                    if (cellValue.Contains("4X8") || cellValue.Contains("4 X 8") || cellValue.Contains("4X 8") || cellValue.Contains("4 X8"))
+                    {
+                        price = .32 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if (cellValue.Contains("4X10") || cellValue.Contains("4 X 10") || cellValue.Contains("4X 10") ||  cellValue.Contains("4 X10"))
+                    {
+                        price = .40 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+
+                    }
+                    else if (cellValue.Contains("4X12") || cellValue.Contains("4 X 12") || cellValue.Contains("4X 12") || cellValue.Contains("4 X12"))
+                    {
+                        price = .48 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+
+                    //5' Sheets
+                    else if (cellValue.Contains("5X8") || cellValue.Contains("5 X 8") || cellValue.Contains("5X 8") || cellValue.Contains("5 X8"))
+                    {
+                        price = .45 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+
+                    }
+                    else if (cellValue.Contains("5X10") || cellValue.Contains("5 X 10") || cellValue.Contains("5X 10") || cellValue.Contains("5 X10"))
+                    {
+                        price = .50 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if (cellValue.Contains("5X12") || cellValue.Contains("5 X 12") || cellValue.Contains("5X 12") || cellValue.Contains("5 X12"))
+                    {
+                        price = .60 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+
+                    //6' Sheets
+                    else if (cellValue.Contains("6X8") || cellValue.Contains("6 X 8") || cellValue.Contains("6X 8") || cellValue.Contains("6 X8"))
+                    {
+                        price = .48 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if (cellValue.Contains("6X10") || cellValue.Contains("6 X 10") || cellValue.Contains("6X 10") || cellValue.Contains("6 X10"))
+                    {
+                        price = .60 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
+                    else if (cellValue.Contains("6X12") || cellValue.Contains("6 X 12") || cellValue.Contains("6X 12") || cellValue.Contains("6 X12"))
+                    {
+                        price = .72 * materialCost * markup;
+                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                    }
                 }
             }
         }
 
+        public void addSkus()
+        {
+            DataGridViewRow newRow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
 
+            DataTable dt = new DataTable("MyTable1");
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                dt.Columns.Add(column.Name, typeof(string));
+            }
+
+            DataRow dr = dt.NewRow();
+
+            for (int i = 0; i < dataGridView1.RowCount -1; i++)
+            {
+                Console.Write(i + " " + dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                String materialDescp = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                double newPrice = 0.0;
+                try
+                {
+                   newPrice = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                }
+                catch
+                {
+                    MessageBox.Show("Line number: " + i + " " + dataGridView1.Rows[i].Cells["Item #"].Value.ToString());
+                }
+                if (materialDescp.Contains("24\'"))
+                {
+                    //dr["Item #"] = "Happy ";// dataGridView1.Rows[i].Cells["Item #"] + "A";
+                   // dr["Price"] = "10";//newPrice / 2;
+                    //dt.Rows.Add(dr);
+                    //dt.ImportRow(dr);
+                   
+    
+                 //   MessageBox.Show("Row added");
+                    
+
+                }
+               // MessageBox.Show(dt.Rows.Count.ToString());
+            }
+            dr["Item #"] = "Billy ";// dataGridView1.Rows[i].Cells["Item #"] + "A";
+            dr["Price"] = "10";//newPrice / 2;
+            dt.Rows.Add(dr);
+            MessageBox.Show(dt.Rows.Count.ToString());
+            //result.Tables.Add(dt);
+
+            foreach(DataRow data in dt.Rows)
+            {
+                dataGridView1.Rows.Add(data);
+            }
+            dataGridView1.Refresh();
+        }
     }
 }
 

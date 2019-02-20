@@ -54,7 +54,7 @@
             // lblTitle
             // 
             this.lblTitle.AutoSize = true;
-            this.lblTitle.Location = new System.Drawing.Point(468, 11);
+            this.lblTitle.Location = new System.Drawing.Point(798, 6);
             this.lblTitle.Name = "lblTitle";
             this.lblTitle.Size = new System.Drawing.Size(84, 13);
             this.lblTitle.TabIndex = 0;
@@ -62,7 +62,7 @@
             // 
             // btnOpen1
             // 
-            this.btnOpen1.Location = new System.Drawing.Point(29, 42);
+            this.btnOpen1.Location = new System.Drawing.Point(12, 66);
             this.btnOpen1.Name = "btnOpen1";
             this.btnOpen1.Size = new System.Drawing.Size(128, 32);
             this.btnOpen1.TabIndex = 1;
@@ -73,7 +73,7 @@
             // cboOpen
             // 
             this.cboOpen.FormattingEnabled = true;
-            this.cboOpen.Location = new System.Drawing.Point(163, 53);
+            this.cboOpen.Location = new System.Drawing.Point(146, 77);
             this.cboOpen.Name = "cboOpen";
             this.cboOpen.Size = new System.Drawing.Size(188, 21);
             this.cboOpen.TabIndex = 2;
@@ -82,23 +82,23 @@
             // dataGridView1
             // 
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(29, 104);
+            this.dataGridView1.Location = new System.Drawing.Point(12, 104);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(484, 410);
+            this.dataGridView1.Size = new System.Drawing.Size(820, 410);
             this.dataGridView1.TabIndex = 3;
             // 
             // dataGridView2
             // 
             this.dataGridView2.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView2.Location = new System.Drawing.Point(546, 104);
+            this.dataGridView2.Location = new System.Drawing.Point(856, 104);
             this.dataGridView2.Name = "dataGridView2";
-            this.dataGridView2.Size = new System.Drawing.Size(500, 409);
+            this.dataGridView2.Size = new System.Drawing.Size(916, 409);
             this.dataGridView2.TabIndex = 4;
             // 
             // cboOpen2
             // 
             this.cboOpen2.FormattingEnabled = true;
-            this.cboOpen2.Location = new System.Drawing.Point(680, 53);
+            this.cboOpen2.Location = new System.Drawing.Point(990, 77);
             this.cboOpen2.Name = "cboOpen2";
             this.cboOpen2.Size = new System.Drawing.Size(188, 21);
             this.cboOpen2.TabIndex = 6;
@@ -106,7 +106,7 @@
             // 
             // btnOpen2
             // 
-            this.btnOpen2.Location = new System.Drawing.Point(546, 42);
+            this.btnOpen2.Location = new System.Drawing.Point(856, 66);
             this.btnOpen2.Name = "btnOpen2";
             this.btnOpen2.Size = new System.Drawing.Size(128, 32);
             this.btnOpen2.TabIndex = 7;
@@ -116,7 +116,7 @@
             // 
             // btnFormatList
             // 
-            this.btnFormatList.Location = new System.Drawing.Point(1063, 104);
+            this.btnFormatList.Location = new System.Drawing.Point(1069, 6);
             this.btnFormatList.Name = "btnFormatList";
             this.btnFormatList.Size = new System.Drawing.Size(134, 23);
             this.btnFormatList.TabIndex = 8;
@@ -127,7 +127,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(1060, 140);
+            this.label1.Location = new System.Drawing.Point(1066, 42);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(61, 13);
             this.label1.TabIndex = 9;
@@ -136,7 +136,7 @@
             // lblItemCount
             // 
             this.lblItemCount.AutoSize = true;
-            this.lblItemCount.Location = new System.Drawing.Point(1184, 140);
+            this.lblItemCount.Location = new System.Drawing.Point(1184, 42);
             this.lblItemCount.Name = "lblItemCount";
             this.lblItemCount.Size = new System.Drawing.Size(13, 13);
             this.lblItemCount.TabIndex = 10;
@@ -145,7 +145,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(1060, 233);
+            this.label2.Location = new System.Drawing.Point(1215, 42);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(80, 13);
             this.label2.TabIndex = 11;
@@ -154,7 +154,7 @@
             // lblMatches
             // 
             this.lblMatches.AutoSize = true;
-            this.lblMatches.Location = new System.Drawing.Point(1184, 233);
+            this.lblMatches.Location = new System.Drawing.Point(1339, 42);
             this.lblMatches.Name = "lblMatches";
             this.lblMatches.Size = new System.Drawing.Size(13, 13);
             this.lblMatches.TabIndex = 12;
@@ -162,7 +162,7 @@
             // 
             // btnFindMatches
             // 
-            this.btnFindMatches.Location = new System.Drawing.Point(1063, 181);
+            this.btnFindMatches.Location = new System.Drawing.Point(1218, 6);
             this.btnFindMatches.Name = "btnFindMatches";
             this.btnFindMatches.Size = new System.Drawing.Size(134, 23);
             this.btnFindMatches.TabIndex = 13;
@@ -172,7 +172,7 @@
             // 
             // btnRmvSkus
             // 
-            this.btnRmvSkus.Location = new System.Drawing.Point(1063, 272);
+            this.btnRmvSkus.Location = new System.Drawing.Point(1374, 6);
             this.btnRmvSkus.Name = "btnRmvSkus";
             this.btnRmvSkus.Size = new System.Drawing.Size(134, 23);
             this.btnRmvSkus.TabIndex = 14;
@@ -183,7 +183,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(1063, 315);
+            this.label3.Location = new System.Drawing.Point(1371, 42);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(83, 13);
             this.label3.TabIndex = 15;
@@ -192,7 +192,7 @@
             // lblDG1RowCount
             // 
             this.lblDG1RowCount.AutoSize = true;
-            this.lblDG1RowCount.Location = new System.Drawing.Point(1162, 315);
+            this.lblDG1RowCount.Location = new System.Drawing.Point(1495, 42);
             this.lblDG1RowCount.Name = "lblDG1RowCount";
             this.lblDG1RowCount.Size = new System.Drawing.Size(13, 13);
             this.lblDG1RowCount.TabIndex = 16;
@@ -200,7 +200,7 @@
             // 
             // btnCalcPrices
             // 
-            this.btnCalcPrices.Location = new System.Drawing.Point(1066, 419);
+            this.btnCalcPrices.Location = new System.Drawing.Point(1641, 6);
             this.btnCalcPrices.Name = "btnCalcPrices";
             this.btnCalcPrices.Size = new System.Drawing.Size(131, 23);
             this.btnCalcPrices.TabIndex = 17;
@@ -210,7 +210,7 @@
             // 
             // tbMarkUp
             // 
-            this.tbMarkUp.Location = new System.Drawing.Point(1066, 366);
+            this.tbMarkUp.Location = new System.Drawing.Point(1529, 35);
             this.tbMarkUp.Name = "tbMarkUp";
             this.tbMarkUp.Size = new System.Drawing.Size(100, 20);
             this.tbMarkUp.TabIndex = 18;
@@ -218,7 +218,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(1066, 347);
+            this.label4.Location = new System.Drawing.Point(1526, 6);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(83, 13);
             this.label4.TabIndex = 19;
@@ -228,6 +228,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(1784, 629);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbMarkUp);
