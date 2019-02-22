@@ -19,8 +19,10 @@ namespace Price_Calc
             InitializeComponent();
         }
 
+        // Creates two data sets and a datatable - these are used to store the information from the spreadsheets. 
         DataSet result;
         DataSet result2;
+        DataTable finalDataTable = new DataTable("MyTable1");
 
         private void btnOpen1_Click(object sender, EventArgs e)
         {
@@ -121,13 +123,18 @@ namespace Price_Calc
 
         private void btnCalcPrices_Click(object sender, EventArgs e)
         {
+
+            foreach (DataGridViewColumn column in dataGridView1.Columns)
+            {
+                finalDataTable.Columns.Add(column.Name, typeof(string));
+            }
+            
+
             calcCWTPrice();
             calcCFTPrice();
             calcCSFPrice();
-            MessageBox.Show("Done Calculating Prices");
 
             addSkus();
-            MessageBox.Show("Done adding Skus");
         }
 
         public void skuSize()
@@ -179,12 +186,10 @@ namespace Price_Calc
                     // MessageBox.Show("enter for "+ dataGridView1.RowCount + " DG1 " + dataGridView1.Rows[j].Cells["Item #"].Value.ToString()+ " DG2 " + dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString());
                     if (dataGridView2.Rows[k].Cells["Custom SKU"].Value.ToString() == dataGridView1.Rows[j].Cells["Item #"].Value.ToString())
                     {
-                        // MessageBox.Show("enter if");
                         matches++;
                         lblMatches.Text = matches.ToString();
-                        //Make sure that all the cells are being checked. 
-                        dataGridView2.Rows[k].DefaultCellStyle.BackColor = Color.Green;
-                        dataGridView1.Rows[j].DefaultCellStyle.BackColor = Color.Green;
+                        dataGridView2.Rows[k].DefaultCellStyle.BackColor = Color.LightGreen;
+                        dataGridView1.Rows[j].DefaultCellStyle.BackColor = Color.LightGreen;
                     }
                 }
 
@@ -226,7 +231,6 @@ namespace Price_Calc
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
                 lBEach = Convert.ToDouble(dataGridView1.Rows[i].Cells["Lbs EA"].Value.ToString());
-                // price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                 materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
 
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cwt")
@@ -310,6 +314,17 @@ namespace Price_Calc
             for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
                 String cellValue = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                Double newPrice = 0.0;
+                try
+                {
+                    newPrice = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                }
+                catch
+                {
+                    MessageBox.Show("Line number: " + i + " " + dataGridView1.Rows[i].Cells["Item #"].Value.ToString());
+                }
+
+
                 if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
                 {
                     materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
@@ -373,12 +388,7 @@ namespace Price_Calc
         public void addSkus()
         {
             //Creates a new datatable and copies the column names over to it. 
-            DataTable dt = new DataTable("MyTable1");
-            foreach (DataGridViewColumn column in dataGridView1.Columns)
-            {
-                dt.Columns.Add(column.Name, typeof(string));
-            }
-
+            
 
             for (int i = 0; i < dataGridView1.RowCount -1; i++)
             {
@@ -395,32 +405,92 @@ namespace Price_Calc
                 }
                 if (materialDescp.Contains("24\'"))
                 {
+                    // Pulls the price from the DGV then calculates the price
                     Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString()) * .83;
                     Double PriceA = Price / 2;
                     Double PriceB = PriceA / 2;
-
+                    // Pulls the description for the DGV then changes it so it can be assigned to the approprate SKU
                     String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
                     String description = descriptionOrig.Replace("24\'" , " 20\'");
                     String descriptionA = descriptionOrig.Replace("24\'" , " 10\'");
                     String descriptionB = descriptionOrig.Replace("24\'" , " 5\'");
 
-
-                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(),description, "", "", "", Math.Round(Price, 2));
-                    dt.Rows.Add("",dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA,"","","", Math.Round(PriceA,2));
-                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
-                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "C", descriptionOrig, "", "", "", dataGridView1.Rows[i].Cells["Price"].Value.ToString());
-                    
-                    
-                    
+                    // Creates a new row and adds it to the new DataTable.
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(),description, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("",dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA,"","","", Math.Round(PriceA,2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "C", descriptionOrig, "", "", "", dataGridView1.Rows[i].Cells["Price"].Value.ToString());                 
                 }
-               
-            }
+                else if (materialDescp.Contains("20\'R") && materialDescp.Contains("DOM"))
+                {
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                    Double PriceD = Price / 40;
+                    
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                    String descriptionA = descriptionOrig.Replace("20\'", " 6\"");
+                 
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "D", descriptionA, "", "", "", Math.Round(PriceD, 2));
+                }
+                else if (materialDescp.Contains("20\'"))
+                {
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                    Double PriceA = Price / 2;
+                    Double PriceB = PriceA / 2;
 
-            
-         
-           
-            dataGridView1.DataSource = dt;
-           
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                    String descriptionA = descriptionOrig.Replace("20\'", " 10\'");
+                    String descriptionB = descriptionOrig.Replace("20\'", " 5\'");
+
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(PriceA, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
+
+                }
+                else if (materialDescp.Contains("21\'"))
+                {
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                    Double PriceA = (.95 *  Price) / 2;
+                    Double PriceB = PriceA / 2;
+
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                    String descriptionA = descriptionOrig.Replace("21\'", " 10\'");
+                    String descriptionB = descriptionOrig.Replace("21\'", " 5\'");
+
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(PriceA, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
+                }
+                else if (materialDescp.Contains("21\'"))
+                {
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                    Double PriceA = (Price) / 2;
+                    Double PriceB = PriceA / 2;
+
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                    String descriptionA = descriptionOrig.Replace("12\'", " 6\'");
+                    String descriptionB = descriptionOrig.Replace("12\'", " 3\'");
+
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(PriceA, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
+                }
+                else if (materialDescp.Contains("40\'"))
+                {
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
+                }
+            }
+            //Updates the DGV to show the new datatable we have created with all the skus. 
+            dataGridView1.DataSource = finalDataTable;
+            dataGridView1.Columns["Class"].Visible = false;
+            dataGridView1.Columns["LBs EA"].Visible = false;
+            dataGridView1.Columns["Material Cost"].Visible = false;
+            dataGridView1.Columns["UOM"].Visible = false;
+            lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
         }
     }
 }
