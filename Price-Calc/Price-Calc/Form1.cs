@@ -372,15 +372,13 @@ namespace Price_Calc
 
         public void addSkus()
         {
-            DataGridViewRow newRow = (DataGridViewRow)dataGridView1.Rows[0].Clone();
-
+            //Creates a new datatable and copies the column names over to it. 
             DataTable dt = new DataTable("MyTable1");
             foreach (DataGridViewColumn column in dataGridView1.Columns)
             {
                 dt.Columns.Add(column.Name, typeof(string));
             }
 
-            DataRow dr = dt.NewRow();
 
             for (int i = 0; i < dataGridView1.RowCount -1; i++)
             {
@@ -397,29 +395,32 @@ namespace Price_Calc
                 }
                 if (materialDescp.Contains("24\'"))
                 {
-                    //dr["Item #"] = "Happy ";// dataGridView1.Rows[i].Cells["Item #"] + "A";
-                   // dr["Price"] = "10";//newPrice / 2;
-                    //dt.Rows.Add(dr);
-                    //dt.ImportRow(dr);
-                   
-    
-                 //   MessageBox.Show("Row added");
+                    Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString()) * .83;
+                    Double PriceA = Price / 2;
+                    Double PriceB = PriceA / 2;
+
+                    String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
+                    String description = descriptionOrig.Replace("24\'" , " 20\'");
+                    String descriptionA = descriptionOrig.Replace("24\'" , " 10\'");
+                    String descriptionB = descriptionOrig.Replace("24\'" , " 5\'");
+
+
+                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(),description, "", "", "", Math.Round(Price, 2));
+                    dt.Rows.Add("",dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA,"","","", Math.Round(PriceA,2));
+                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
+                    dt.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "C", descriptionOrig, "", "", "", dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                     
-
+                    
+                    
                 }
-               // MessageBox.Show(dt.Rows.Count.ToString());
+               
             }
-            dr["Item #"] = "Billy ";// dataGridView1.Rows[i].Cells["Item #"] + "A";
-            dr["Price"] = "10";//newPrice / 2;
-            dt.Rows.Add(dr);
-            MessageBox.Show(dt.Rows.Count.ToString());
-            //result.Tables.Add(dt);
 
-            foreach(DataRow data in dt.Rows)
-            {
-                dataGridView1.Rows.Add(data);
-            }
-            dataGridView1.Refresh();
+            
+         
+           
+            dataGridView1.DataSource = dt;
+           
         }
     }
 }
