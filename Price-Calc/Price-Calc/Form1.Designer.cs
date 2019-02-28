@@ -47,6 +47,8 @@
             this.btnCalcPrices = new System.Windows.Forms.Button();
             this.tbMarkUp = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
+            this.btnExport = new System.Windows.Forms.Button();
+            this.saveFileDialog1 = new System.Windows.Forms.SaveFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView2)).BeginInit();
             this.SuspendLayout();
@@ -224,12 +226,23 @@
             this.label4.TabIndex = 19;
             this.label4.Text = "Percent Markup";
             // 
+            // btnExport
+            // 
+            this.btnExport.Location = new System.Drawing.Point(1260, 574);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new System.Drawing.Size(143, 23);
+            this.btnExport.TabIndex = 20;
+            this.btnExport.Text = "Export to Excel";
+            this.btnExport.UseVisualStyleBackColor = true;
+            this.btnExport.Click += new System.EventHandler(this.btnExport_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ButtonFace;
             this.ClientSize = new System.Drawing.Size(1784, 629);
+            this.Controls.Add(this.btnExport);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.tbMarkUp);
             this.Controls.Add(this.btnCalcPrices);
@@ -279,6 +292,8 @@
         private System.Windows.Forms.Button btnCalcPrices;
         private System.Windows.Forms.TextBox tbMarkUp;
         private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.Button btnExport;
+        private System.Windows.Forms.SaveFileDialog saveFileDialog1;
     }
 }
 
