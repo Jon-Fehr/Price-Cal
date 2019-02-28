@@ -48,6 +48,8 @@ namespace Price_Calc
                     }
                 }
             }
+            //Once the button click is done. The button color changes so user knows that everything is complete. 
+            btnOpen1.BackColor = Color.LightGreen;
         }
 
         private void cboOpen_SelectedIndexChanged(object sender, EventArgs e)
@@ -85,6 +87,8 @@ namespace Price_Calc
                     }
                 }
             }
+            //Once the button click is done. The button color changes so user knows that everything is complete. 
+            btnOpen2.BackColor = Color.LightGreen;
         }
 
         private void cboOpen2_SelectedIndexChanged(object sender, EventArgs e)
@@ -111,17 +115,12 @@ namespace Price_Calc
 
             //Removes the skus that didn't match the invantory list
             removeUnusedSku();
+
+            //Once the button click is done. The button color changes so user knows that everything is complete. 
+            btnFormatList.BackColor = Color.LightGreen;
         }
 
-        private void btnFindMatches_Click(object sender, EventArgs e)
-        {
-           
-        }
-
-        private void btnRmvSkus_Click(object sender, EventArgs e)
-        {
-            
-        }
+        
 
         private void btnCalcPrices_Click(object sender, EventArgs e)
         {
@@ -143,12 +142,18 @@ namespace Price_Calc
             {
                 MessageBox.Show("You need to enter the % mark up before you calculate a new price.");
             }
+
+            //Once the button click is done. The button color changes so user knows that everything is complete. 
+            btnCalcPrices.BackColor = Color.LightGreen;
         }
 
         private void btnExport_Click(object sender, EventArgs e)
         {
             //Passes the Datagridview to a function that exports it to a CVS(libre office Spreadsheet file)
             SaveToCSV(dataGridView1);
+
+            //Once the button click is done. The button color changes so user knows that everything is complete. 
+            btnExport.BackColor = Color.LightGreen;
         }
 
         private void SaveToCSV(DataGridView DGV)
@@ -522,19 +527,19 @@ namespace Price_Calc
         public void addSkus()
         {
             //Creates a new datatable and copies the column names over to it. 
-            
-            for (int i = 0; i < dataGridView1.RowCount -1; i++)
+
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
             {
-               
+
                 String materialDescp = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
                 double newPrice = 0.0;
                 try
                 {
-                   newPrice = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
+                    newPrice = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                 }
                 catch
                 {
-                   
+
                 }
                 if (materialDescp.Contains("24\'"))
                 {
@@ -544,25 +549,25 @@ namespace Price_Calc
                     Double PriceB = PriceA / 2;
                     // Pulls the description for the DGV then changes it so it can be assigned to the approprate SKU
                     String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
-                    String description = descriptionOrig.Replace("24\'" , " 20\'");
-                    String descriptionA = descriptionOrig.Replace("24\'" , " 10\'");
-                    String descriptionB = descriptionOrig.Replace("24\'" , " 5\'");
+                    String description = descriptionOrig.Replace("24\'", " 20\'");
+                    String descriptionA = descriptionOrig.Replace("24\'", " 10\'");
+                    String descriptionB = descriptionOrig.Replace("24\'", " 5\'");
 
                     // Creates a new row and adds it to the new DataTable.
-                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(),description, "", "", "", Math.Round(Price, 2));
-                    finalDataTable.Rows.Add("",dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA,"","","", Math.Round(PriceA,2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), description, "", "", "", Math.Round(Price, 2));
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(PriceA, 2));
                     finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(PriceB, 2));
-                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "C", descriptionOrig, "", "", "", dataGridView1.Rows[i].Cells["Price"].Value.ToString());                 
+                    finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "C", descriptionOrig, "", "", "", dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                 }
                 // Checks to see if material is a DOM tube vs ERW
                 else if (materialDescp.Contains("20\'R") && materialDescp.Contains("DOM"))
                 {
                     Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                     Double PriceD = Price / 40;
-                    
+
                     String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
                     String descriptionA = descriptionOrig.Replace("20\'", " 6\"");
-                 
+
                     finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), descriptionOrig, "", "", "", Math.Round(Price, 2));
                     finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "D", descriptionA, "", "", "", Math.Round(PriceD, 2));
                 }
@@ -584,7 +589,7 @@ namespace Price_Calc
                 else if (materialDescp.Contains("21\'"))
                 {
                     Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
-                    Double PriceA = (.95 *  Price) / 2;
+                    Double PriceA = (.95 * Price) / 2;
                     Double PriceB = PriceA / 2;
 
                     String descriptionOrig = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
@@ -600,7 +605,7 @@ namespace Price_Calc
                     if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString() != "EA")
                     {
                         //Checks to see if UOM value is == EA do this in the catch statement and then make it so the price is equal to material cost. 
-                        Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString()); 
+                        Double Price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Price"].Value.ToString());
                         Double PriceA = (Price) / 2;
                         Double PriceB = PriceA / 2;
 
@@ -645,7 +650,19 @@ namespace Price_Calc
             lblDG1RowCount.Text = dataGridView1.RowCount.ToString();
         }
 
-       
+        private void tbMarkUp_Enter(object sender, EventArgs e)
+
+        {
+
+            if (tbMarkUp.Text.Trim() != "" || tbMarkUp.Text != null)
+
+            {
+
+                tbMarkUp.Clear();
+
+            }
+
+        }
     }
 }
 
