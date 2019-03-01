@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.lblTitle = new System.Windows.Forms.Label();
             this.btnOpen1 = new System.Windows.Forms.Button();
             this.cboOpen = new System.Windows.Forms.ComboBox();
@@ -341,6 +342,7 @@
             this.Controls.Add(this.cboOpen);
             this.Controls.Add(this.btnOpen1);
             this.Controls.Add(this.lblTitle);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Yakesh Steel Price Calculator";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

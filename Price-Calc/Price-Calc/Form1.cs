@@ -182,28 +182,26 @@ namespace Price_Calc
                 string cellValue = "";
                 for (int i = 0; i < columnCount; i++)
                 {
-                    columnNames += DGV.Columns[i].Name.ToString() + ",";
-                   
+                    columnNames += DGV.Columns[i].Name.ToString() + ",";  
                 }
                 output[0] += columnNames;
-                MessageBox.Show(output[0] + " " + DGV.RowCount);
                 for (int i = 0; (i) < DGV.RowCount; i++)
                 {
                     for (int j = 0; j < columnCount; j++)
                     {
+                    
                         try
                         {
+                            //if there is a value that is null it will throw an error. 
                             cellValue = DGV.Rows[i].Cells[j].Value.ToString();
                         }
                         catch
                         {
+                            // In my case I have serveral cells that are null. So when we get to one of those cells we just fill it with a space. 
                             cellValue = " ";
-                        }
-                   
-                        
+                        }                        
                             output[i] += cellValue + ",";
-                        
-                        
+
                     }
                 }
                 System.IO.File.WriteAllLines(sfd.FileName, output, System.Text.Encoding.UTF8);
@@ -332,45 +330,55 @@ namespace Price_Calc
             {
                 MessageBox.Show("You can only enter whole numbers as a markup.");
             }
-
-            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            if (markup > 0)
             {
-                if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cft")
-                {
-                    materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+                //Calculates the markup into a percent that will then be used to generate the stores price. 
+                markup = (1 + (markup / 100));
 
-                    if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("24\'")){
-                        price = (.24 * materialCost * markup);
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
-                    }
-                    else if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().Contains("EA"))
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+                {
+                    if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "cft")
                     {
-                        price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+
+                        if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("24\'"))
+                        {
+                            price = (.24 * materialCost * markup);
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+                        else if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().Contains("EA"))
+                        {
+                            price = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+                        else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("20\'") || dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20R"))
+                        {
+                            price = (.2 * materialCost * markup);
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+                        else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("21\'"))
+                        {
+                            price = (.21 * materialCost * markup);
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+                        else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("40\'"))
+                        {
+                            price = (.4 * materialCost * markup);
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+
+                        else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("12\'"))
+                        {
+                            price = (.12 * materialCost * markup);
+                            dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
+                        }
+
                     }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("20\'") || dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains(" 20R"))
-                    {
-                        price = (.2 * materialCost * markup);
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
-                    }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("21\'"))
-                    {
-                        price = (.21 * materialCost * markup);
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
-                    }
-                    else if(dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("40\'"))
-                    {
-                        price = (.4 * materialCost * markup);
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
-                    }
-                    
-                    else if (dataGridView1.Rows[i].Cells["Description"].Value.ToString().Contains("12\'"))
-                    {
-                        price = (.12 * materialCost * markup);
-                        dataGridView1.Rows[i].Cells["Price"].Value = Math.Round(price, 2);
-                    }
-                    
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please enter a percent markup that is greater than zero");
             }
         }
 
@@ -383,144 +391,151 @@ namespace Price_Calc
             double materialCost;
             double markup = 0.0;
 
+
             try
             { 
                 // Convert markup function needed. 
-                markup = Convert.ToInt32(tbMarkUp.Text);
-                markup = (1 + (markup / 100));
+                markup = Convert.ToDouble(tbMarkUp.Text);
             }
             catch
             {
-                MessageBox.Show("You can only enter whole numbers as a markup.");
+                MessageBox.Show("You can only enter whole positive numbers as a markup.");
             }
-        
-            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            if (markup > 0)
             {
-                String cellValue = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
-                
+                //Calculates the markup into a percent that will then be used to generate the stores price. 
+                markup = (1 + (markup / 100));
 
-
-                if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
+                for (int i = 0; i < dataGridView1.RowCount - 1; i++)
                 {
-                    materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
-                   
+                    String cellValue = dataGridView1.Rows[i].Cells["Description"].Value.ToString();
 
-                    //4' Sheets
-                    if (cellValue.Contains("4X8") || cellValue.Contains("4 X 8") || cellValue.Contains("4X 8") || cellValue.Contains("4 X8"))
+                    if (dataGridView1.Rows[i].Cells["UOM"].Value.ToString().ToLower() == "csf")
                     {
-                        price = .32 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("4X8", "4X4").Replace("4 X 8", "4X4").Replace("4X 8", "4X4").Replace("4 X8", "4X4");
-                        String descriptionB = descriptionA.Replace("4X4", "4X2");
+                        materialCost = Convert.ToDouble(dataGridView1.Rows[i].Cells["Material Cost"].Value.ToString());
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "",  "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
-                    else if (cellValue.Contains("4X10") || cellValue.Contains("4 X 10") || cellValue.Contains("4X 10") ||  cellValue.Contains("4 X10"))
-                    {
-                        price = .40 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("4X10", "4X5").Replace("4 X 8", "4X5").Replace("4X 8", "4X5").Replace("4 X8", "4X5");
-                        String descriptionB = descriptionA.Replace("4X5", "4X2.5");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        //4' Sheets
+                        if (cellValue.Contains("4X8") || cellValue.Contains("4 X 8") || cellValue.Contains("4X 8") || cellValue.Contains("4 X8"))
+                        {
+                            price = .32 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("4X8", "4X4").Replace("4 X 8", "4X4").Replace("4X 8", "4X4").Replace("4 X8", "4X4");
+                            String descriptionB = descriptionA.Replace("4X4", "4X2");
 
-                    }
-                    else if (cellValue.Contains("4X12") || cellValue.Contains("4 X 12") || cellValue.Contains("4X 12") || cellValue.Contains("4 X12"))
-                    {
-                        price = .48 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("4X12", "4X6").Replace("4 X 12", "4X6").Replace("4X 12", "4X6").Replace("4 X12", "4X6");
-                        String descriptionB = descriptionA.Replace("4X6", "4X3");
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
+                        else if (cellValue.Contains("4X10") || cellValue.Contains("4 X 10") || cellValue.Contains("4X 10") || cellValue.Contains("4 X10"))
+                        {
+                            price = .40 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("4X10", "4X5").Replace("4 X 8", "4X5").Replace("4X 8", "4X5").Replace("4 X8", "4X5");
+                            String descriptionB = descriptionA.Replace("4X5", "4X2.5");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
 
-                    //5' Sheets
-                    else if (cellValue.Contains("5X8") || cellValue.Contains("5 X 8") || cellValue.Contains("5X 8") || cellValue.Contains("5 X8"))
-                    {
-                        price = .45 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("5X8", "5X4").Replace("5 X 8", "5X4").Replace("5X 8", "5X4").Replace("5 X8", "5X4");
-                        String descriptionB = descriptionA.Replace("5X4", "5X2");
+                        }
+                        else if (cellValue.Contains("4X12") || cellValue.Contains("4 X 12") || cellValue.Contains("4X 12") || cellValue.Contains("4 X12"))
+                        {
+                            price = .48 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("4X12", "4X6").Replace("4 X 12", "4X6").Replace("4X 12", "4X6").Replace("4 X12", "4X6");
+                            String descriptionB = descriptionA.Replace("4X6", "4X3");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
 
-                    }
-                    else if (cellValue.Contains("5X10") || cellValue.Contains("5 X 10") || cellValue.Contains("5X 10") || cellValue.Contains("5 X10"))
-                    {
-                        price = .50 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("5X10", "5X5").Replace("5 X 10", "5X5").Replace("5X 10", "5X5").Replace("5 X10", "5X5");
-                        String descriptionB = descriptionA.Replace("5X5", "5X2.5");
+                        //5' Sheets
+                        else if (cellValue.Contains("5X8") || cellValue.Contains("5 X 8") || cellValue.Contains("5X 8") || cellValue.Contains("5 X8"))
+                        {
+                            price = .45 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("5X8", "5X4").Replace("5 X 8", "5X4").Replace("5X 8", "5X4").Replace("5 X8", "5X4");
+                            String descriptionB = descriptionA.Replace("5X4", "5X2");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
-                    else if (cellValue.Contains("5X12") || cellValue.Contains("5 X 12") || cellValue.Contains("5X 12") || cellValue.Contains("5 X12"))
-                    {
-                        price = .60 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("5X12", "5X6").Replace("5 X 12", "5X6").Replace("5X 12", "5X6").Replace("5 X12", "5X6");
-                        String descriptionB = descriptionA.Replace("5X6", "5X3");
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
+                        }
+                        else if (cellValue.Contains("5X10") || cellValue.Contains("5 X 10") || cellValue.Contains("5X 10") || cellValue.Contains("5 X10"))
+                        {
+                            price = .50 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("5X10", "5X5").Replace("5 X 10", "5X5").Replace("5X 10", "5X5").Replace("5 X10", "5X5");
+                            String descriptionB = descriptionA.Replace("5X5", "5X2.5");
 
-                    //6' Sheets
-                    else if (cellValue.Contains("6X8") || cellValue.Contains("6 X 8") || cellValue.Contains("6X 8") || cellValue.Contains("6 X8"))
-                    {
-                        price = .48 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("6X8", "6X4").Replace("6 X 8", "6X4").Replace("6X 8", "6X4").Replace("6 X8", "6X4");
-                        String descriptionB = descriptionA.Replace("6X4", "6X2");
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
+                        else if (cellValue.Contains("5X12") || cellValue.Contains("5 X 12") || cellValue.Contains("5X 12") || cellValue.Contains("5 X12"))
+                        {
+                            price = .60 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("5X12", "5X6").Replace("5 X 12", "5X6").Replace("5X 12", "5X6").Replace("5 X12", "5X6");
+                            String descriptionB = descriptionA.Replace("5X6", "5X3");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
-                    else if (cellValue.Contains("6X10") || cellValue.Contains("6 X 10") || cellValue.Contains("6X 10") || cellValue.Contains("6 X10"))
-                    {
-                        price = .60 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("6X10", "6X5").Replace("6 X 10", "6X5").Replace("6X 10", "6X5").Replace("6 X10", "6X5");
-                        String descriptionB = descriptionA.Replace("6X5", "6X2.5");
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
-                    }
-                    else if (cellValue.Contains("6X12") || cellValue.Contains("6 X 12") || cellValue.Contains("6X 12") || cellValue.Contains("6 X12"))
-                    {
-                        price = .72 * materialCost * markup;
-                        priceA = price / 2;
-                        priceB = priceA / 2;
-                        String descriptionA = cellValue.Replace("6X12", "6X6").Replace("6 X 12", "6X6").Replace("6X 12", "6X6").Replace("6 X12", "6X6");
-                        String descriptionB = descriptionA.Replace("6X6", "6X3");
+                        //6' Sheets
+                        else if (cellValue.Contains("6X8") || cellValue.Contains("6 X 8") || cellValue.Contains("6X 8") || cellValue.Contains("6 X8"))
+                        {
+                            price = .48 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("6X8", "6X4").Replace("6 X 8", "6X4").Replace("6X 8", "6X4").Replace("6 X8", "6X4");
+                            String descriptionB = descriptionA.Replace("6X4", "6X2");
 
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
-                        finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
+                        else if (cellValue.Contains("6X10") || cellValue.Contains("6 X 10") || cellValue.Contains("6X 10") || cellValue.Contains("6 X10"))
+                        {
+                            price = .60 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("6X10", "6X5").Replace("6 X 10", "6X5").Replace("6X 10", "6X5").Replace("6 X10", "6X5");
+                            String descriptionB = descriptionA.Replace("6X5", "6X2.5");
+
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
+                        else if (cellValue.Contains("6X12") || cellValue.Contains("6 X 12") || cellValue.Contains("6X 12") || cellValue.Contains("6 X12"))
+                        {
+                            price = .72 * materialCost * markup;
+                            priceA = price / 2;
+                            priceB = priceA / 2;
+                            String descriptionA = cellValue.Replace("6X12", "6X6").Replace("6 X 12", "6X6").Replace("6X 12", "6X6").Replace("6 X12", "6X6");
+                            String descriptionB = descriptionA.Replace("6X6", "6X3");
+
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString(), cellValue, "", "", "", Math.Round(price, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "A", descriptionA, "", "", "", Math.Round(priceA, 2));
+                            finalDataTable.Rows.Add("", dataGridView1.Rows[i].Cells["Item #"].Value.ToString() + "B", descriptionB, "", "", "", Math.Round(priceB, 2));
+                        }
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Please enter a percent markup that is greater than zero");
             }
         }
 
@@ -539,7 +554,7 @@ namespace Price_Calc
                 }
                 catch
                 {
-
+                    //Due to the fact that we are calculating sheet skus in a different area we get some error here. we leave it blank to skip over those issues. 
                 }
                 if (materialDescp.Contains("24\'"))
                 {
@@ -657,9 +672,7 @@ namespace Price_Calc
             if (tbMarkUp.Text.Trim() != "" || tbMarkUp.Text != null)
 
             {
-
                 tbMarkUp.Clear();
-
             }
 
         }
