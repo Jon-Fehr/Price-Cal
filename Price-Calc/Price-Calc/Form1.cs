@@ -293,7 +293,7 @@ namespace Price_Calc
             
             try{
                 // Convert markup function needed. 
-                markup = Convert.ToInt32(tbMarkUp.Text);
+                markup = Convert.ToDouble(tbMarkUp.Text);
                 markup = (1 + (markup / 100));
             }
             catch
@@ -319,12 +319,13 @@ namespace Price_Calc
             double price;
             double materialCost;
             double markup = 0.0;
-
+            
             try
             {
                 // Convert markup function needed. 
-                markup = Convert.ToInt32(tbMarkUp.Text);
+                markup = Convert.ToDouble(tbMarkUp.Text);
                 markup = (1 + (markup / 100));
+                MessageBox.Show(markup.ToString());
             }
             catch
             {
@@ -332,8 +333,6 @@ namespace Price_Calc
             }
             if (markup > 0)
             {
-                //Calculates the markup into a percent that will then be used to generate the stores price. 
-                markup = (1 + (markup / 100));
 
                 for (int i = 0; i < dataGridView1.RowCount - 1; i++)
                 {
@@ -389,7 +388,7 @@ namespace Price_Calc
             double priceA;
             double priceB;
             double materialCost;
-            double markup = 0.0;
+            double markup = 40;
 
 
             try
@@ -676,6 +675,8 @@ namespace Price_Calc
             }
 
         }
+
+       
     }
 }
 
